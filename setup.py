@@ -8,6 +8,7 @@ import shutil
 
 from sklearn.model_selection import train_test_split
 
+
 def setup_argparse():
     parser = argparse.ArgumentParser(description='region gan')
     parser.add_argument('--k', type=int, default=10, help='Number of images per class for K-Shot learning')
@@ -82,30 +83,30 @@ def generate_datasets(args):
     grade0_patients_valid = [img for img in grade0_files if patient_regex.findall(img)[0] in valid]
     grade1_patients_valid = [img for img in grade1_files if
                              ".ipynb_checkpoints" not in img and patient_regex.findall(img)[0] in valid]
-    grade2_patients_valid= [img for img in grade2_files if patient_regex.findall(img)[0] in valid]
+    grade2_patients_valid = [img for img in grade2_files if patient_regex.findall(img)[0] in valid]
     grade3_patients_valid = [img for img in grade3_files if patient_regex.findall(img)[0] in valid]
     grade4_patients_valid = [img for img in grade4_files if patient_regex.findall(img)[0] in valid]
 
     grade0_patients_test = [img for img in grade0_files if patient_regex.findall(img)[0] in test]
     grade1_patients_test = [img for img in grade1_files if
-                             ".ipynb_checkpoints" not in img and patient_regex.findall(img)[0] in test]
+                            ".ipynb_checkpoints" not in img and patient_regex.findall(img)[0] in test]
     grade2_patients_test = [img for img in grade2_files if patient_regex.findall(img)[0] in test]
     grade3_patients_test = [img for img in grade3_files if patient_regex.findall(img)[0] in test]
     grade4_patients_test = [img for img in grade4_files if patient_regex.findall(img)[0] in test]
-    
+
     train_pth = os.path.join(args.outdir, "train")
     valid_pth = os.path.join(args.outdir, "valid")
     test_pth = os.path.join(args.outdir, "test")
-    
+
     if not os.path.exists(train_pth):
         os.makedirs(train_pth)
-        
+
         copy_dataset_files(grade0_patients_train, os.path.join(args.outdir, "train"), 0)
         copy_dataset_files(grade1_patients_train, os.path.join(args.outdir, "train"), 1)
         copy_dataset_files(grade2_patients_train, os.path.join(args.outdir, "train"), 2)
         copy_dataset_files(grade3_patients_train, os.path.join(args.outdir, "train"), 3)
         copy_dataset_files(grade4_patients_train, os.path.join(args.outdir, "train"), 4)
-        
+
     if not os.path.exists(valid_pth):
         os.makedirs(valid_pth)
         copy_dataset_files(grade0_patients_valid, os.path.join(args.outdir, "valid"), 0)
@@ -123,16 +124,18 @@ def generate_datasets(args):
         copy_dataset_files(grade4_patients_test, os.path.join(args.outdir, "test"), 4)
 
     sample_few_shot(args)
-    
+
+
 def filter_kl_grade(images, kl):
     return [img for img in images if f"KL{kl}" in img]
 
+
 def sample_few_shot(args):
-    train = [f"{args.outdir}/{img}" for img in os.listdir(os.path.join(args.outdir, "train"))]
-    valid = [f"{args.outdir}/{img}" for img in os.listdir(os.path.join(args.outdir, "valid"))]
+    train = [f"{args.outdir}train/{img}" for img in os.listdir(os.path.join(args.outdir, "train"))]
+    valid = [f"{args.outdir}valid/{img}" for img in os.listdir(os.path.join(args.outdir, "valid"))]
 
     np.random.seed(42)
-    
+
     train_samples = []
     valid_samples = []
     for kl in range(0, 5):
@@ -140,7 +143,7 @@ def sample_few_shot(args):
         valid_filtered = filter_kl_grade(valid, kl)
         train_samples.extend(np.random.choice(train_filtered, args.k, replace=False))
         valid_samples.extend(np.random.choice(valid_filtered, args.k, replace=False))
-    
+
     with open(f"{args.outdir}/{args.k}-shot_train.txt", "w") as f:
         for samp in train_samples:
             print(samp)
@@ -150,10 +153,7 @@ def sample_few_shot(args):
         for samp in valid_samples:
             f.write(f"{samp}\n")
 
+
 if __name__ == '__main__':
     args = setup_argparse()
     generate_datasets(args)
-    
-
-
-

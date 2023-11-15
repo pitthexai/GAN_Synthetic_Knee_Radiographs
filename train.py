@@ -102,14 +102,14 @@ class Train:
 
         fake_images = self.netG(noise)
 
-        real_image = DiffAugment(real_images, policy=self.policy)
-        fake_images = [DiffAugment(fake, policy=self.policy) for fake in fake_images]
+        real_image = DiffAugment(real_images, policy=self.diff_aug_policy)
+        fake_images = [DiffAugment(fake, policy=self.diff_aug_policy) for fake in fake_images]
 
         ## 2. train Discriminator
         self.netD.zero_grad()
 
-        err_dr, rec_img_all, rec_img_small, rec_img_part = self.train_d(self.netD, real_image, label="real")
-        self.train_d(self.netD, [fi.detach() for fi in fake_images], label="fake")
+        err_dr, rec_img_all, rec_img_small, rec_img_part = self.train_d(real_image, label="real")
+        self.train_d([fi.detach() for fi in fake_images], label="fake")
         self.optimizerD.step()
 
         ## 3. train Generator
@@ -126,7 +126,7 @@ class Train:
         return real_image, rec_img_all, rec_img_small, rec_img_part
 
     def train_model(self):
-        dataset = ImageFolder(self.image_set)
+        dataset = ImageFolder(self.image_set, transforms=self.transforms)
         dataloader = get_dataloader(dataset, batch_size=self.batch_size)
         fixed_noise = torch.FloatTensor(8, self.nz).normal_(0, 1).to(self.device)
 
