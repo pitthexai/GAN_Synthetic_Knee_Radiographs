@@ -1,8 +1,9 @@
 import argparse
 from train import Train
+from fid import eval_fid
 
 def setup_argparse():
-    parser = argparse.ArgumentParser(description='region gan')
+    parser = argparse.ArgumentParser(description='Knee KL Grade GAN')
 
     parser.add_argument('--path', type=str, default='../data/KLGradeGANs/10-shot_train.txt',
                         help='Path to text file containing training set images')
@@ -13,7 +14,7 @@ def setup_argparse():
     parser.add_argument('--batch_size', type=int, default=8, help='mini batch number of images')
     parser.add_argument('--im_size', type=int, default=1024, help='image resolution')
     parser.add_argument('--ckpt', type=str, default='None', help='checkpoint weight path if have one')
-    parser.add_argument("--eval", type=bool, default=False, help='run FastGAN eval using FID.')
+
     args = parser.parse_args()
 
     return args
@@ -22,3 +23,4 @@ if __name__ == '__main__':
     args = setup_argparse()
     trainer = Train(args)
     trainer.train_model()
+

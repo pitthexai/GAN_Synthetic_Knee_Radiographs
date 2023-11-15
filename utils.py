@@ -9,6 +9,7 @@ import json
 
 from models import load_params, copy_G_params
 
+
 def get_dir(args):
     task_name = 'train_results/' + args.name
     saved_model_folder = os.path.join(task_name, 'models')
@@ -26,6 +27,7 @@ def get_dir(args):
 
     return saved_model_folder, saved_image_folder
 
+
 def crop_image_by_part(image, part):
     hw = image.shape[2]//2
     if part==0:
@@ -36,6 +38,7 @@ def crop_image_by_part(image, part):
         return image[:,:,hw:,:hw]
     if part==3:
         return image[:,:,hw:,hw:]
+
 
 def save_iter_image(iteration, saved_image_folder, netG, avg_param_G, fixed_noise, real_image, rec_img_all, rec_img_small,
                     rec_img_part):
@@ -48,6 +51,7 @@ def save_iter_image(iteration, saved_image_folder, netG, avg_param_G, fixed_nois
             rec_img_all, rec_img_small,
             rec_img_part]).add(1).mul(0.5), saved_image_folder + '/rec_%d.jpg' % iteration)
     load_params(netG, backup_para)
+
 
 def save_model(iteration, saved_model_folder, netG, netD, avg_param_G, optimizerG, optimizerD):
     backup_para = copy_G_params(netG)

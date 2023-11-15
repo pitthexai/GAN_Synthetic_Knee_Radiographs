@@ -1,7 +1,4 @@
-import torch
-from torch import nn
 import torch.optim as optim
-import torch.nn.functional as F
 
 from tqdm import tqdm
 
@@ -12,7 +9,7 @@ import random
 
 from data import ImageFolder, get_dataloader
 from diffaug import DiffAugment
-from models import Generator, Discriminator, copy_G_params, weights_init
+from models import Generator, Discriminator, weights_init
 from utils import *
 
 class Train:
@@ -93,6 +90,8 @@ class Train:
             err = F.relu(torch.rand_like(pred) * 0.2 + 0.8 + pred).mean()
             err.backward()
             return pred.mean().item()
+
+
     def one_iter(self, dataloader):
         real_images = next(dataloader)
         real_images = real_images.to(self.device)
