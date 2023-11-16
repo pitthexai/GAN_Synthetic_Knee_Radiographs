@@ -11,7 +11,7 @@ def setup_argparse():
                         help='Path to real images')
     parser.add_argument('--fake', type=str, default='./',
                         help='Path to fake images')
-    parser.add_argument('--incpt_layer', type=int, default=64, help='Feature layer of InceptionV3 for FID')
+    parser.add_argument('--incpt_layer', type=int, default=2048, help='Feature layer of InceptionV3 for FID')
 
     parser.add_argument('--cuda', type=int, default=0, help='index of gpu to use')
 
