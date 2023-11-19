@@ -27,6 +27,14 @@ def get_dir(args):
 
     return saved_model_folder, saved_image_folder
 
+def parse_image_set(image_set):
+    files = []
+    with open(image_set, "r") as f:
+        for image in f.readlines():
+            image = image.strip()
+            files.append(image)
+
+    return files
 
 def crop_image_by_part(image, part):
     hw = image.shape[2]//2

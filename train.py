@@ -7,10 +7,11 @@ from torchvision import transforms
 import lpips
 import random
 
-from data import ImageFolder, get_dataloader
+from data import ImageFolder, IndividualKLGradeImageFolder, get_dataloader
 from diffaug import DiffAugment
 from models import Generator, Discriminator, weights_init
 from utils import *
+
 
 class Train:
     def __init__(self, args):
@@ -25,7 +26,7 @@ class Train:
 
         self.diff_aug_policy = 'color,translation'
         self.transforms = transforms.Compose([
-            transforms.Resize((int(self.im_size),int(self.im_size))),
+            transforms.Resize((int(self.im_size), int(self.im_size))),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
@@ -33,6 +34,7 @@ class Train:
 
     def __parse_args(self, args):
         self.image_set = args.path
+        self.kl_grade = args.kl_grade
         self.total_iterations = args.iter
         self.checkpoint = args.ckpt
         self.batch_size = args.batch_size
@@ -50,7 +52,6 @@ class Train:
         self.saved_model_folder, self.saved_image_folder = get_dir(args)
 
     def __init_models(self):
-
         self.netG = Generator(ngf=self.ngf, nz=self.nz, im_size=self.im_size)
         self.netG.apply(weights_init)
 
@@ -61,17 +62,24 @@ class Train:
         self.netD.to(self.device)
 
         self.avg_param_G = copy_G_params(self.netG)
+
         self.percept = lpips.PerceptualLoss(model='net-lin', net='vgg', use_gpu=True)
         self.optimizerG = optim.Adam(self.netG.parameters(), lr=self.nlr, betas=(self.nbeta1, 0.999))
         self.optimizerD = optim.Adam(self.netD.parameters(), lr=self.nlr, betas=(self.nbeta1, 0.999))
 
+        if self.checkpoint is not None:
+            self.__load_checkpoint()
+
     def __load_checkpoint(self):
         ckpt = torch.load(self.checkpoint)
+        print(ckpt.keys())
         self.netG.load_state_dict({k.replace('module.', ''): v for k, v in ckpt['g'].items()})
         self.netD.load_state_dict({k.replace('module.', ''): v for k, v in ckpt['d'].items()})
         self.avg_param_G = ckpt['g_ema']
         self.optimizerG.load_state_dict(ckpt['opt_g'])
         self.optimizerD.load_state_dict(ckpt['opt_d'])
+        self.netG.to(self.device)
+        self.netD.to(self.device)
         self.current_iteration = int(self.checkpoint.split('_')[-1].split('.')[0])
         del ckpt
 
@@ -90,7 +98,6 @@ class Train:
             err = F.relu(torch.rand_like(pred) * 0.2 + 0.8 + pred).mean()
             err.backward()
             return pred.mean().item()
-
 
     def one_iter(self, dataloader):
         real_images = next(dataloader)
@@ -125,14 +132,19 @@ class Train:
         return real_image, rec_img_all, rec_img_small, rec_img_part
 
     def train_model(self):
-        dataset = ImageFolder(self.image_set, transforms=self.transforms)
+        if not self.kl_grade:
+            dataset = ImageFolder(self.image_set, transforms=self.transforms)
+        else:
+            dataset = IndividualKLGradeImageFolder(self.image_set, self.kl_grade, transforms=self.transforms)
+
         dataloader = get_dataloader(dataset, batch_size=self.batch_size)
+
         fixed_noise = torch.FloatTensor(8, self.nz).normal_(0, 1).to(self.device)
 
         for iteration in tqdm(range(self.current_iteration, self.total_iterations + 1)):
             real_image, rec_img_all, rec_img_small, rec_img_part = self.one_iter(dataloader)
 
-            if iteration % (self.save_interval*10) == 0:
+            if iteration % (self.save_interval * 10) == 0:
                 save_iter_image(iteration, self.saved_image_folder, self.netG, self.avg_param_G,
                                 fixed_noise, real_image, rec_img_all, rec_img_small, rec_img_part)
 
