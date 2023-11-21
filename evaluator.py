@@ -1,8 +1,5 @@
 import argparse
-from models import Generator
-
-import torch
-from fid import eval_fid
+from fastgan.fid import eval_fid
 
 def setup_argparse():
     parser = argparse.ArgumentParser(description='Knee KL Grade GAN')

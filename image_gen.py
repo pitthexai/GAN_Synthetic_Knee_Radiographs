@@ -3,8 +3,8 @@ import argparse
 import os
 import torch
 
-from models import Generator
-from generate import generate_samples
+from fastgan.models import Generator
+from fastgan.generate import generate_samples
 
 def setup_argparse():
     parser = argparse.ArgumentParser(description='Generate synthetic knee images from trained GAN')

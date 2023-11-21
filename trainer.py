@@ -1,10 +1,6 @@
 import argparse
-from train import Train
-from fid import eval_fid
+from fastgan.train import Train
 
-import argparse
-from train import Train
-from fid import eval_fid
 
 def setup_argparse():
     parser = argparse.ArgumentParser(description='Knee KL Grade GAN')

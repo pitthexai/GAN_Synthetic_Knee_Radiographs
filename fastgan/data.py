@@ -3,13 +3,12 @@ import torch.utils.data as data
 
 from PIL import Image
 
-from utils import parse_image_set
+from fastgan.utils import parse_image_set
 
 """
 Infinite Sampler and InfiniteSamplerWrapper taken from:
 https://github.com/odegeasslbc/FastGAN-pytorch/blob/main/operation.py
 """
-
 
 def get_dataloader(dataset, batch_size, dataloader_workers=8):
     return iter(data.DataLoader(dataset, batch_size=batch_size, shuffle=False,

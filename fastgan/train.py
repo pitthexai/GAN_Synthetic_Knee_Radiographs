@@ -4,7 +4,7 @@ from tqdm import tqdm
 
 from torchvision import transforms
 
-import lpips
+from fastgan import lpips
 import random
 
 from data import ImageFolder, IndividualKLGradeImageFolder, get_dataloader

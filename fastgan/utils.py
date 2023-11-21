@@ -18,7 +18,7 @@ def get_dir(args):
     os.makedirs(saved_model_folder, exist_ok=True)
     os.makedirs(saved_image_folder, exist_ok=True)
 
-    for f in os.listdir('./'):
+    for f in os.listdir('../'):
         if '.py' in f:
             shutil.copy(f, task_name + '/' + f)
 
