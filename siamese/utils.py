@@ -1,47 +1,25 @@
-import numpy as np
-import pandas as pd
-
+import json
 import os
-from tqdm import tqdm
 
-def filter_kl_files(data_root, kl_cats):
-    kl_files = {}
-    images = os.listdir(data_root)
-    for kl in kl_cats:
-        kl_files[kl] = list(filter(lambda x: kl in x, images))
+import torch
 
-    return kl_files
+def filter_files_by_class(image_list, cats):
+    files = {}
+    for kl in cats:
+        files[kl] = list(filter(lambda x: kl in x, image_list))
 
-def generate_pairs(cats, data_root, n_pairs):
-    image1_files, image2_files, labels  = [], [], []
-    files = filter_kl_files(data_root, cats)
+    return files
 
-    for i in tqdm(range(n_pairs)):
-        # If the index is even, generate a sample that have two images that are the similar
-        if i % 2 == 0:
-            # Randomly select a category
-            cat = np.random.choice(cats, 1)[0]
+def get_dir(args):
+    task_name = 'siamese_results/' + args.name
+    saved_model_folder = os.path.join(task_name, 'models')
 
-            # Randomly select two images
-            image1, image2 = np.random.choice(files[cat], 2)
+    os.makedirs(saved_model_folder, exist_ok=True)
 
-            labels.append(1.0)
-            image1_files.append(image1)
-            image2_files.append(image2)
+    with open(os.path.join(saved_model_folder, '../args.txt'), 'w') as f:
+        json.dump(args.__dict__, f, indent=2)
 
-        # If the index is odd, generate a pair of two images that are not similar
-        else:
-            cat1 = np.random.choice(cats, 1)[0]
+    return saved_model_folder
 
-            # Get second category, don't select the same category used for cat1
-            cat2 = np.random.choice([cat for cat in cats if cat != cat1], 1)[0]
-
-            # Get image samples
-            image1 = np.random.choice(files[cat1],1)[0]
-            image2 = np.random.choice(files[cat2], 1)[0]
-
-            labels.append(0.0)
-            image1_files.append(image1)
-            image2_files.append(image2)
-
-    return image1_files, image2_files, labels
+def save_best_model(saved_model_folder, net):
+    torch.save(net.state_dict(), os.path.join(saved_model_folder, 'siamese_best.pt'))

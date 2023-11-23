@@ -16,7 +16,14 @@ from utils import *
 class Train:
     def __init__(self, args):
         self.__parse_args(args)
-
+        self.ndf = 64
+        self.ngf = 64
+        self.nz = 256
+        self.nlr = 0.0002
+        self.nbeta1 = 0.5
+        self.use_cuda = True
+        self.multi_gpu = True
+        self.dataloader_workers = 8
         self.device = torch.device("cpu")
         if self.use_cuda:
             self.device = torch.device("cuda:0")
@@ -39,14 +46,7 @@ class Train:
         self.checkpoint = args.ckpt
         self.batch_size = args.batch_size
         self.im_size = args.im_size
-        self.ndf = 64
-        self.ngf = 64
-        self.nz = 256
-        self.nlr = 0.0002
-        self.nbeta1 = 0.5
-        self.use_cuda = True
-        self.multi_gpu = True
-        self.dataloader_workers = 8
+
         self.current_iteration = args.start_iter
         self.save_interval = 100
         self.saved_model_folder, self.saved_image_folder = get_dir(args)
