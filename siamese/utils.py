@@ -5,8 +5,8 @@ import torch
 
 def filter_files_by_class(image_list, cats):
     files = {}
-    for kl in cats:
-        files[kl] = list(filter(lambda x: kl in x, image_list))
+    for k in cats:
+        files[k] = list(filter(lambda x: k in x, image_list))
 
     return files
 
@@ -20,6 +20,7 @@ def get_dir(args):
         json.dump(args.__dict__, f, indent=2)
 
     return saved_model_folder
+
 
 def save_best_model(saved_model_folder, net):
     torch.save(net.state_dict(), os.path.join(saved_model_folder, 'siamese_best.pt'))
