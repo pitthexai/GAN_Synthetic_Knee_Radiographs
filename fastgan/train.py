@@ -1,16 +1,17 @@
 import torch.optim as optim
+import torch.nn as nn
 
 from tqdm import tqdm
 
 from torchvision import transforms
 
-from fastgan import lpips
+import lpips
 import random
 
-from data import ImageFolder, IndividualKLGradeImageFolder, get_dataloader
-from diffaug import DiffAugment
-from models import Generator, Discriminator, weights_init
-from utils import *
+from fastgan.data import ImageFolder, IndividualKLGradeImageFolder, get_dataloader
+from fastgan.diffaug import DiffAugment
+from fastgan.models import Generator, Discriminator, weights_init
+from fastgan.utils import *
 
 
 class Train:
@@ -58,9 +59,16 @@ class Train:
         self.netD = Discriminator(ndf=self.ndf, im_size=self.im_size)
         self.netD.apply(weights_init)
 
+#         self.netG.to(self.device)
+#         self.netD.to(self.device)
+        
+        if self.multi_gpu:
+            self.netG = nn.DataParallel(self.netG, device_ids=[i for i in range(torch.cuda.device_count())])
+            self.netD = nn.DataParallel(self.netD, device_ids=[i for i in range(torch.cuda.device_count())])
+        
         self.netG.to(self.device)
         self.netD.to(self.device)
-
+        
         self.avg_param_G = copy_G_params(self.netG)
 
         self.percept = lpips.PerceptualLoss(model='net-lin', net='vgg', use_gpu=True)
@@ -148,7 +156,7 @@ class Train:
                 save_iter_image(iteration, self.saved_image_folder, self.netG, self.avg_param_G,
                                 fixed_noise, real_image, rec_img_all, rec_img_small, rec_img_part)
 
-            if iteration % (self.save_interval * 50) == 0 or iteration == self.total_iterations:
+            if iteration % (self.save_interval * 10) == 0 or iteration == self.total_iterations:
                 save_model(iteration, self.saved_model_folder, self.netG, self.netD, self.avg_param_G,
                            self.optimizerG, self.optimizerD)
 

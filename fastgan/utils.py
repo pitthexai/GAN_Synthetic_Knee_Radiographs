@@ -7,7 +7,7 @@ import shutil
 
 import json
 
-from models import load_params, copy_G_params
+from fastgan.models import load_params, copy_G_params
 
 
 def get_dir(args):
