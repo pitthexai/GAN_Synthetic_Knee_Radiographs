@@ -5,8 +5,7 @@ from torchvision import utils as vutils
 import os
 from tqdm import tqdm
 
-def generate_samples(generator, n_sample, out_dir, device="cpu", batch_size=16):
-    noise_dim = 256
+def generate_samples(generator, n_sample, out_dir, device="cuda", noise_dim=256, batch_size=16):
     with torch.no_grad():
         for i in tqdm(range(n_sample // batch_size)):
             noise = torch.randn(batch_size, noise_dim).to(device)

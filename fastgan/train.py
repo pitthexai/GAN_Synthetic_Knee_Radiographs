@@ -17,9 +17,9 @@ from fastgan.utils import *
 class Train:
     def __init__(self, args):
         self.__parse_args(args)
-        self.ndf = 64
-        self.ngf = 64
-        self.nz = 256
+        self.ndf = 128
+        self.ngf = 128
+        self.nz = 512
         self.nlr = 0.0002
         self.nbeta1 = 0.5
         self.use_cuda = True
@@ -27,7 +27,7 @@ class Train:
         self.dataloader_workers = 8
         self.device = torch.device("cpu")
         if self.use_cuda:
-            self.device = torch.device("cuda:0")
+            self.device = torch.device("cuda")
 
         self.__init_models()
         self.metrics = {}
@@ -59,13 +59,6 @@ class Train:
         self.netD = Discriminator(ndf=self.ndf, im_size=self.im_size)
         self.netD.apply(weights_init)
 
-#         self.netG.to(self.device)
-#         self.netD.to(self.device)
-        
-        if self.multi_gpu:
-            self.netG = nn.DataParallel(self.netG, device_ids=[i for i in range(torch.cuda.device_count())])
-            self.netD = nn.DataParallel(self.netD, device_ids=[i for i in range(torch.cuda.device_count())])
-        
         self.netG.to(self.device)
         self.netD.to(self.device)
         
@@ -77,17 +70,28 @@ class Train:
 
         if self.checkpoint is not None:
             self.__load_checkpoint()
+        
+        if self.multi_gpu:
+            self.netG = nn.DataParallel(self.netG, device_ids=[i for i in range(torch.cuda.device_count())])
+            self.netD = nn.DataParallel(self.netD, device_ids=[i for i in range(torch.cuda.device_count())])
+            
+        self.netG.to(self.device)
+        self.netD.to(self.device)
+        
+        print("Disc. Device:", next(self.netD.parameters()).device)
+        print("Gen. Device:", next(self.netG.parameters()).device)
 
     def __load_checkpoint(self):
+#         if multi_gpu:
+            
         ckpt = torch.load(self.checkpoint)
-        print(ckpt.keys())
         self.netG.load_state_dict({k.replace('module.', ''): v for k, v in ckpt['g'].items()})
         self.netD.load_state_dict({k.replace('module.', ''): v for k, v in ckpt['d'].items()})
         self.avg_param_G = ckpt['g_ema']
         self.optimizerG.load_state_dict(ckpt['opt_g'])
         self.optimizerD.load_state_dict(ckpt['opt_d'])
-        self.netG.to(self.device)
-        self.netD.to(self.device)
+#         self.netG.to(self.device)
+#         self.netD.to(self.device)
         self.current_iteration = int(self.checkpoint.split('_')[-1].split('.')[0])
         del ckpt
 

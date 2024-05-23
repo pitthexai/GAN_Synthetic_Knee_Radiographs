@@ -10,9 +10,9 @@ Infinite Sampler and InfiniteSamplerWrapper taken from:
 https://github.com/odegeasslbc/FastGAN-pytorch/blob/main/operation.py
 """
 
-def get_dataloader(dataset, batch_size, dataloader_workers=8):
+def get_dataloader(dataset, batch_size, dataloader_workers=4):
     return iter(data.DataLoader(dataset, batch_size=batch_size, shuffle=False,
-                                sampler=InfiniteSamplerWrapper(dataset), num_workers=dataloader_workers,
+                                sampler=InfiniteSamplerWrapper(dataset), #num_workers=dataloader_workers,
                                 pin_memory=True))
 
 
