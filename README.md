@@ -7,9 +7,9 @@ The entire dataset (00m/96m) analyzed during the current study is publicly avail
 
 ### Complete Synthetic Dataset
 The complete synthetic knee radiography dataset containing both complete and cropped knee radiographs can be accessed here: 
-<p>[1] KL01.zip [<a href="https://drive.google.com/file/d/1Fltp7DbJ8CL-yfU13MGwY92XnnQe7tWb/view?usp=sharing" target="_blank">Download</a>]</p>
-<p>[2] KL234.zip [<a href="https://drive.google.com/file/d/1VBd6b794MZgR39vKuadRK8Sqaau44490/view?usp=sharing" target="_blank">Download</a>]</p>
-<p>[3] Bilateral_Knee_XRay.zip [<a href="https://drive.google.com/file/d/1fQLWdcy3iVVYCECUC10dKzdBiclOYNWN/view?usp=sharing" target="_blank">Download</a>]</p>
+<p><strong>[1]</strong> KL01.zip [<a href="https://drive.google.com/file/d/1Fltp7DbJ8CL-yfU13MGwY92XnnQe7tWb/view?usp=sharing" target="_blank">Download</a>]</p>
+<p><strong>[2]</strong> KL234.zip [<a href="https://drive.google.com/file/d/1VBd6b794MZgR39vKuadRK8Sqaau44490/view?usp=sharing" target="_blank">Download</a>]</p>
+<p><strong>[3]</strong> Bilateral_Knee_XRay.zip [<a href="https://drive.google.com/file/d/1fQLWdcy3iVVYCECUC10dKzdBiclOYNWN/view?usp=sharing" target="_blank">Download</a>]</p>
 
 ### Acknowledgements
 This work was supported in part by Oracle Cloud credits and related resources provided by Oracle for Research. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the Oracle for Research. 
