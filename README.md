@@ -6,7 +6,9 @@ This GitHub repository includes all Python codes to train, generate, and validat
 The entire dataset (00m/96m) analyzed during the current study is publicly available at the Osteoarthritis Initiative (OAI). You can apply for access here: https://nda.nih.gov/oai. 
 
 ### Complete Synthetic Dataset
-The complete synthetic image database containing both complete and cropped knee radiographs can be accessed here: [Link TBD]
+The complete synthetic knee radiography dataset containing both complete and cropped knee radiographs can be accessed here: 
+<p>KL01.zip [<a href="https://drive.google.com/file/d/1Fltp7DbJ8CL-yfU13MGwY92XnnQe7tWb/view?usp=sharing" target="_blank">Download</a>]</p>
+<p>KL234.zip [<a href="https://drive.google.com/file/d/1VBd6b794MZgR39vKuadRK8Sqaau44490/view?usp=sharing" target="_blank">Download</a>]</p>
 
 ### Acknowledgements
 This work was supported in part by Oracle Cloud credits and related resources provided by Oracle for Research. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the Oracle for Research. 
