@@ -17,4 +17,4 @@ This work was supported in part by Oracle Cloud credits and related resources pr
 ### Publication
 This contribution is fully explained in the following manuscript, which is now under review at the [Journal of the American Medical Informatics Association (JAMIA)](https://academic.oup.com/jamia). Any publication using this work would require to cite the following paper:
 
-[1] Littlefield et al. Generative AI in Orthopedics: An Explainable Deep Few-Shot Image Augmentation Pipeline for Plain Knee Radiographs and Kellgren–Lawrence Grading. May 2024. [Under Review]
+[1] Nickolas Littlefield, Soheyla Amirian, Jacob Biehl, Edward G Andrews, Michael Kann, Nicole Myers, Leah Reid, Adolph J Yates, Brian J McGrory, Bambang Parmanto, Thorsten M Seyler, Johannes F Plate, Hooman H Rashidi, Ahmad P Tafti, Generative AI in orthopedics: an explainable deep few-shot image augmentation pipeline for plain knee radiographs and Kellgren-Lawrence grading, Journal of the American Medical Informatics Association, Volume 31, Issue 11, November 2024, Pages 2668–2678, https://doi.org/10.1093/jamia/ocae246
