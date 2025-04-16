@@ -19,7 +19,7 @@ This work was supported in part by Oracle Cloud credits and related resources pr
 <p align="justify">This contribution is fully explained in the following paper published through <a href="https://www.sciencedirect.com/science/article/pii/S1386505625000395" target="_blank">International Journal of Medical Informatics</a>. Any publication using this work would require to cite the following paper:
 
   ```
-  @@article{littlefield2024generative,
+  @article{littlefield2024generative,
   title={Generative AI in orthopedics: an explainable deep few-shot image augmentation pipeline for plain knee radiographs and Kellgren-Lawrence grading},
   author={Littlefield, Nickolas and Amirian, Soheyla and Biehl, Jacob and Andrews, Edward G and Kann, Michael and Myers, Nicole and Reid, Leah and Yates Jr, Adolph J and McGrory, Brian J and Parmanto, Bambang and others},
   journal={Journal of the American Medical Informatics Association},
