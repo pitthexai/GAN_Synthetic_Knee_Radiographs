@@ -29,7 +29,6 @@ This work was supported in part by Oracle Cloud credits and related resources pr
   year={2024},
   publisher={Oxford University Press}
 }
-
 ```
 ## Contact Information
 For any queries, reach out to Ahmad P. Tafti (tafti.ahmad@pitt.edu).
